@@ -110,6 +110,7 @@ func (cllr *DatabaseController) handleAddPostgresql(db *Database) {
 				"database-password": []byte(gen_password),
 			},
 		}
+		cllr.cm.RegisterDatabaseCreated("postgres", u.Hostname(), dbname)
 
 		_, err := cllr.Clientset.Secrets(db.Namespace).Create(secret)
 		if err != nil {
@@ -195,4 +196,5 @@ func (cllr *DatabaseController) handleDeletePostgresql(db *Database) {
 			db.Namespace, db.Name, err)
 		return
 	}
+	cllr.cm.RegisterDatabaseDelete("postgres", u.Hostname(), dbname)
 }
